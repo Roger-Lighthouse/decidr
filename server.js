@@ -43,6 +43,26 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+// Invitations Page
+app.get("/invitations", (req, res) => {
+  res.render("poll_invitations");
+});
+
+// Poll Confirmations Page
+app.get("/confirm", (req, res) => {
+  res.render("poll_invitations_confirm");
+});
+
+// Reponse Page
+app.get("/response", (req, res) => {
+  res.render("poll_answers");
+});
+
+// Results page 
+app.get("/results", (req, res) => {
+  res.render("poll_results");
+});
+
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
