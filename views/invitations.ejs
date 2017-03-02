@@ -12,31 +12,29 @@
   </head>
 
   <body>
-
-    <!-- Nav Bar --> 
+    <!-- Nav Bar -->
     <nav>
       <div>
         <button>Decidr</button>
       </div>
-      <h1>Poll Answer Poll</h1>
+      <h2>Poll Invitations</h2>
     </nav>
 
-    <!-- Content --> 
+    <!-- Content -->
     <main>
 
-      <section> 
-        <div>Poll Question <p>information</p></div>
-        <div>Event Date <p>information</p></div>
-      </section>
-
-      <section> 
-        <p>Options</p>
-        <form method=POST action=#>
-          <h2>Rearrange</h2>
-            <div>Chosen Options to be shifted around</div>
+      <section>
+        <form method='POST' action='/invitations/<%= poll_id %>/<%= creator_user_id %>/<%= creator_url %>'>
+          <p>Email 1: <input type="email" name="email"></p>
+          <p>Email 2: <input type="email" name="email"></p>
+          <p>Email 3: <input type="email" name="email"></p>
+          <p>Email 4: <input type="email" name="email"></p>
+          <div>Add More Emails</div>
+          <div>Email Poll</div>
+          <button type='submit'>Submit</button>
         </form>
       </section>
-      
-    </main> 
+
+    </main>
   </body>
 </html>

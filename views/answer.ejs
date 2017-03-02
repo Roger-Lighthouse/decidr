@@ -12,28 +12,31 @@
   </head>
 
   <body>
-    <!-- Nav Bar --> 
+
+    <!-- Nav Bar -->
     <nav>
       <div>
         <button>Decidr</button>
       </div>
-      <h2>Poll Invitations</h2> 
+      <h1>Poll Answer Poll</h1
     </nav>
 
-    <!-- Content --> 
+    <!-- Content -->
     <main>
 
-      <section> 
+      <section>
+        <div>Poll Question <p><%= poll_question %></p></div>
+        <div>Event Date <p><%= %></p></div>
+      </section>
+
+      <section>
+        <p>Options</p>
         <form method=POST action=#>
-          <p>Email 1: <input type="email" name="email"></p>
-          <p>Email 2: <input type="email" name="email"></p>
-          <p>Email 3: <input type="email" name="email"></p>
-          <p>Email 4: <input type="email" name="email"></p>
-          <div>Add More Emails</div>
-          <div>Email Poll</div>
+          <h2>Rearrange</h2>
+            <div>Chosen Options to be shifted around</div>
         </form>
       </section>
 
-    </main> 
+    </main>
   </body>
 </html>
