@@ -13,9 +13,12 @@ const knexConfig  = require("./knexfile");
 const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
+//const mailgun     = require('./mailgun/mailgun');
+
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
+const notifyRoutes = require("./routes/notify");
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -37,11 +40,14 @@ app.use(express.static("public"));
 
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
+app.use("/notify", notifyRoutes());
 
 // Home page
 app.get("/", (req, res) => {
   res.render("index");
 });
+
+//twilCli.sendSms('416-828-8393', 'Test it Big Parth');
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
