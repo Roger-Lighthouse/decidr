@@ -1,0 +1,63 @@
+@import 'base.scss'; 
+
+// .container {
+//   .row {
+//     .red {
+//       box-shadow: 0 3px 0 0 snow;
+//       background-color: $red;
+//       padding: 22px 4%;
+//       border: 1px solid $red;
+//       border-radius: 5px;
+//       cursor: pointer;
+//       text-align: center;
+//       width: 40px; 
+//       height: 30px; 
+//     }
+
+//     // .btn-primary.raised:active, .btn-primary.raised.active {
+//     //   background: $red;
+//     //   box-shadow: none;
+//     //   margin-bottom: -3px;
+//     //   margin-top: 3px;
+//     // }
+//   }
+// }
+.container {
+  .row {
+    .btn-custom {
+      background-color: $red;
+      padding: 22px 4%;
+      border-radius: 5px;
+      border: 1px solid darkred; 
+      cursor: pointer;
+      text-align: center;
+      font-size: 200%; 
+      color: snow;
+      z-index: 1;  
+      .well {
+        background-color: $lightred; 
+      }
+    }
+    .btn-custom:hover {
+      background-color: $lightred; 
+    }
+    .btn-custom:active {
+      background-color: $darkred; 
+    }
+  }
+}
+
+.btn-small {
+  background-color: $red;
+  border: 1px solid darkred; 
+  margin-top: 10px; 
+  border-radius: 2px; 
+  color: snow; 
+  font-size: 120%;
+}
+.btn-small:hover {
+  background-color: $lightred; 
+}
+.btn-small:active {
+  background-color: $darkred; 
+}
