@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="/styles/nav-bar.css" type="text/css" />
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
+    <script type="text/javascript" src="/scripts/jquery.js"></script>
+
   </head>
 
   <body>
@@ -31,14 +33,13 @@
       <h2>Poll Invitations</h2> 
 
       <section> 
-        <form method=POST action=#>
-          <p>Email 1: <input type="email" name="email"></p>
-          <p>Email 2: <input type="email" name="email"></p>
-          <p>Email 3: <input type="email" name="email"></p>
-          <p>Email 4: <input type="email" name="email"></p>
-          <button class='btn-small'>Add More Emails</button>
-          <button class='btn-small'>Email Poll</button>
+        <form class='list' method=POST action='/invitations'>
+          <p>Invite 1: <input name="email" placeholder='email'></p>
+
+          <p class='field faded visible'>Invite 2: <input type="email" name="email" placeholder='email'></p>
+          <input class='btn-small send-poll' type='submit' value='Send Out Poll'>
         </form>
+        <div class='btn-small add'>Add More Emails</div>
       </section>
 
     </main> 

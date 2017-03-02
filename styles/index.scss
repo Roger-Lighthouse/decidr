@@ -1,27 +1,5 @@
 @import 'base.scss'; 
 
-// .container {
-//   .row {
-//     .red {
-//       box-shadow: 0 3px 0 0 snow;
-//       background-color: $red;
-//       padding: 22px 4%;
-//       border: 1px solid $red;
-//       border-radius: 5px;
-//       cursor: pointer;
-//       text-align: center;
-//       width: 40px; 
-//       height: 30px; 
-//     }
-
-//     // .btn-primary.raised:active, .btn-primary.raised.active {
-//     //   background: $red;
-//     //   box-shadow: none;
-//     //   margin-bottom: -3px;
-//     //   margin-top: 3px;
-//     // }
-//   }
-// }
 .container {
   .row {
     .btn-custom {
@@ -60,4 +38,29 @@
 }
 .btn-small:active {
   background-color: $darkred; 
+}
+
+.transition { 
+  transition: 300ms; 
+}
+
+.none {
+  visibility: visible; 
+  transition: 300ms; 
+}
+
+.visible {
+  visibility: visible; 
+}
+
+.faded {
+  opacity: .5; 
+}
+
+.unfaded {
+  opacity: 1; 
+}
+
+.empty-space {
+  margin-top: 10px; 
 }
