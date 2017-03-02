@@ -26,17 +26,18 @@
     <% include ./partials/_nav-bar %>
 
     <!-- Content --> 
-    <main>
+    <main class='container'>
 
       <h2>Poll Invitations</h2> 
+
       <section> 
         <form method=POST action=#>
           <p>Email 1: <input type="email" name="email"></p>
           <p>Email 2: <input type="email" name="email"></p>
           <p>Email 3: <input type="email" name="email"></p>
           <p>Email 4: <input type="email" name="email"></p>
-          <div class='.btn-default'>Add More Emails</div>
-          <div>Email Poll</div>
+          <button class='btn-small'>Add More Emails</button>
+          <button class='btn-small'>Email Poll</button>
         </form>
       </section>
 
