@@ -19,12 +19,12 @@ const users = {b0BmHg: { id: 'b0BmHg', email: '1@test.com' },
   NFpKw4: { id: 'NFpKw4', email: 'b@test.com' },
   spLX8Q: { id: 'spLX8Q', email: 'c@test.com' },
   Hyhfj4: { id: 'Hyhfj4', email: 'd@test.com' }};
-const invite = { 'sLFxN1': [
-['b0BmHg','X7aBJj'],
-['dAatr7','dAatr7'],
-['NFpKw4','NFpKw4'],
-['spLX8Q','spLX8Q'],
-['Hyhfj4','Hyhfj4']]};
+const invite = { 'sLFxN1': {
+'b0BmHg':'X7aBJj',
+'dAatr7':'dAatr7',
+'NFpKw4':'NFpKw4',
+'spLX8Q':'spLX8Q',
+'Hyhfj4':'Hyhfj4'}};
 const choice = { 'sLFxN1':
    { 'fOavU9':
       { id: 'fOavU9',
@@ -51,7 +51,7 @@ const choice = { 'sLFxN1':
         poll_id: 'sLFxN1',
         choice_name: 'five',
         choice_description: '' } } };
-const selection = {};
+const selection = {'sLFxN1': {} };
 
 module.exports = () => {
 
@@ -85,8 +85,10 @@ module.exports = () => {
       question: req.body.question,
       creator_url: creatorUrl
     };
-    invite[pollId] = [[req.session.user_id, creatorUrl]];
+    invite[pollId] = {};
+    invite[pollId][req.session.user_id] = creatorUrl;
     choice[pollId] = {};
+    selection[pollId] = {};
     for (let option of req.body.option) {
       let choice_id = generateRandomString({});
       choice[pollId][choice_id] = {
@@ -117,21 +119,30 @@ module.exports = () => {
     for (let email of emails) {
       let key = checkEmails(users, req.body.email);
       if (key) {
-        invite[req.params.pollId].push([key, generateRandomString({})]);
+        invite[req.params.pollId][key] = generateRandomString({});
       } else {
         const id = generateRandomString(users);
         users[id] = { id: id,
                       email: email};
-        invite[req.params.pollId].push([id, generateRandomString({})]);
+        invite[req.params.pollId][id] = generateRandomString({});
       }
       // mail gun code goes here or after the curly bracket
     }
+    console.log('invites:',invite);
 
     res.redirect(`/answer/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
   });
 
   // Reponse Page http://localhost:8080/answer/sLFxN1/b0BmHg/X7aBJj
   router.get("/answer/:pollId/:userId/:urlId", (req, res) => {
+    console.log(invite[req.params.pollId]);
+    if (!(invite[req.params.pollId]
+        && invite[req.params.pollId][req.params.userId]
+        && req.params.urlId === invite[req.params.pollId][req.params.userId])) {
+      // change this to a proper error later
+      res.status(400).send(`<h1>400 Error: </h1><p>Left field blank.</p><a href='/'>Try starting again.</a>`);
+    }
+
     const choices = [];
     for (let key of Object.keys(choice[req.params.pollId])) {
       choices.push([choice[req.params.pollId][key].choice_name, key]);
@@ -146,7 +157,6 @@ module.exports = () => {
   });
 
   router.post("/answer/:pollId/:userId/:urlId", (req, res) => {
-    selection[req.params.pollId] = {};
     selection[req.params.pollId][req.params.userId] = {};
 
     for (let rank of Object.keys(req.body)) {
@@ -163,7 +173,8 @@ module.exports = () => {
     // console.log('polls:', poll);
     // console.log('users:', users);
     // console.log('choice:', choice);
-    // console.log('selection:', selection);
+    console.log('selection:', selection);
+
 
     const score = {};
     const numOfChoices = Object.keys(choice[req.params.pollId]).length;
@@ -171,10 +182,7 @@ module.exports = () => {
       score[option] = 0;
     };
 
-    const poll_users = [];
-    invite[req.params.pollId].forEach( (user) => {
-      poll_users.push(user[0]);
-    });
+    const poll_users = Object.keys(invite[req.params.pollId]);
 
     const votes = [0, poll_users.length];
     for (let user of poll_users) {
