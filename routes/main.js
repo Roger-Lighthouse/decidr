@@ -19,7 +19,12 @@ const users = {b0BmHg: { id: 'b0BmHg', email: '1@test.com' },
   NFpKw4: { id: 'NFpKw4', email: 'b@test.com' },
   spLX8Q: { id: 'spLX8Q', email: 'c@test.com' },
   Hyhfj4: { id: 'Hyhfj4', email: 'd@test.com' }};
-const invites = { 'sLFxN1': [ 'dAatr7', 'NFpKw4', 'spLX8Q', 'Hyhfj4' ] };
+const invite = { 'sLFxN1': [
+['b0BmHg','X7aBJj'],
+['dAatr7','dAatr7'],
+['NFpKw4','NFpKw4'],
+['spLX8Q','spLX8Q'],
+['Hyhfj4','Hyhfj4']]};
 const choice = { 'sLFxN1':
    { 'fOavU9':
       { id: 'fOavU9',
@@ -80,7 +85,7 @@ module.exports = () => {
       question: req.body.question,
       creator_url: creatorUrl
     };
-    invites[pollId] = [];
+    invite[pollId] = [[req.session.user_id, creatorUrl]];
     choice[pollId] = {};
     for (let option of req.body.option) {
       let choice_id = generateRandomString({});
@@ -112,12 +117,12 @@ module.exports = () => {
     for (let email of emails) {
       let key = checkEmails(users, req.body.email);
       if (key) {
-        invites[req.params.pollId].push(key);
+        invite[req.params.pollId].push([key, generateRandomString({})]);
       } else {
         const id = generateRandomString(users);
         users[id] = { id: id,
                       email: email};
-        invites[req.params.pollId].push(id);
+        invite[req.params.pollId].push([id, generateRandomString({})]);
       }
       // mail gun code goes here or after the curly bracket
     }
@@ -127,38 +132,74 @@ module.exports = () => {
 
   // Reponse Page http://localhost:8080/answer/sLFxN1/b0BmHg/X7aBJj
   router.get("/answer/:pollId/:userId/:urlId", (req, res) => {
-    console.log('invites:', invites);
-    console.log('polls:', poll);
-    console.log('users', users);
-    console.log('choice', choice);
-
     const choices = [];
     for (let key of Object.keys(choice[req.params.pollId])) {
-      choices.push([
-        choice[req.params.pollId][key].choice_name,
-        key
-        ]);
+      choices.push([choice[req.params.pollId][key].choice_name, key]);
     }
-
     const resLocals = {
       poll: poll[req.params.pollId],
       choices: choices,
       user_id: req.params.userId,
       url_id: req.params.urlId
     };
-    console.log('test:',resLocals.poll);
     res.render("answer", resLocals);
   });
 
   router.post("/answer/:pollId/:userId/:urlId", (req, res) => {
-    console.log('req.body:', req.body);
-    // const optionOrder = req.body.option_order;
-    // res.redirect("/result/${req.params.pollId}/${req.params.pollId}/${req.params.pollId}") // /result/:pollId/:userId/:urlId
+    selection[req.params.pollId] = {};
+    selection[req.params.pollId][req.params.userId] = {};
+
+    for (let rank of Object.keys(req.body)) {
+      let choice_id = req.body[rank];
+      selection[req.params.pollId][req.params.userId][choice_id] = Number(rank);
+    }
+
+    res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`)
   });
 
-  // Results page /result/:pollId/:userId/:urlId
+  // Results page
   router.get("/result/:pollId/:userId/:urlId", (req, res) => {
-    res.render("result");
+    // console.log('invite:', invite);
+    // console.log('polls:', poll);
+    // console.log('users:', users);
+    // console.log('choice:', choice);
+    // console.log('selection:', selection);
+
+    const score = {};
+    const numOfChoices = Object.keys(choice[req.params.pollId]).length;
+    for (let option of Object.keys(choice[req.params.pollId])) {
+      score[option] = 0;
+    };
+
+    const poll_users = [];
+    invite[req.params.pollId].forEach( (user) => {
+      poll_users.push(user[0]);
+    });
+
+    const votes = [0, poll_users.length];
+    for (let user of poll_users) {
+      if (selection[req.params.pollId][user]) {
+        votes[0] += 1;
+        Object.keys(selection[req.params.pollId][user]).forEach( (elm) => {
+          score[elm] += numOfChoices - selection[req.params.pollId][user][elm];
+        });
+      };
+    };
+
+    const choicesRankOrder = [];
+    Object.keys(score).forEach( (elm) => {
+      choicesRankOrder.push([elm, score[elm]]);
+    });
+    choicesRankOrder.sort( (a, b) => { return b[1] - a[1] });
+    // console.log('score_ranked:', choicesRankOrder);
+
+    const resLocals = {
+      poll: poll[req.params.pollId],
+      choice: choice,
+      rank_order: choicesRankOrder,
+      votes: votes
+    };
+    res.render("result", resLocals);
   });
 
 

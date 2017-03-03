@@ -13,30 +13,43 @@
 
   <body>
 
-    <!-- Nav Bar --> 
+    <!-- Nav Bar -->
     <nav>
       <div>
         <button>Decidr</button>
       </div>
       <h1>Poll Results</h1>
-      <div># out of # voted</div?
+      <div><%= votes[0] %> out of <%= votes[1] %> voted</div?
     </nav>
 
-    <!-- Content --> 
+    <!-- Content -->
     <main>
 
-      <section> 
-        <div>Poll Question <p>information</p></div>
+      <section>
+        <p>Poll Question: <%= poll.question %></p>
+        <p>Event Date: <%= poll.datetime_event %></p>
       </section>
 
-      <section> 
+      <section>
+        Table of Results
         <table>
-          <tr>
-            Table of Results 
-          <tr>
+          <thead>
+            <tr>
+              <th>Option</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let option of rank_order) { %>
+            <tr>
+              <td><%= choice[poll.poll_id][option[0]].choice_name %></td>
+              <td><%= option[1]  %></td>
+            </tr>
+            <% } %>
+          </tbody>
         </table>
       </section>
-      
-    </main> 
+
+    </main>
   </body>
 </html>
