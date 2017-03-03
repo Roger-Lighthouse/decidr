@@ -59,7 +59,7 @@ app.get("/response", (req, res) => {
   res.render("poll_answers");
 });
 
-// Results page 
+// Results page
 app.get("/results", (req, res) => {
   res.render("poll_results");
 });
