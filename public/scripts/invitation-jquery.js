@@ -11,7 +11,11 @@ $(() => {
       e.preventDefault(); 
       index += 1; 
 
-      $('.field').append(`<div class="empty-space"></div><p class="field faded transition none">Invite ${index}: <input type='email' name="email" placeholder="email"></p>`);
+      $('.field').append(`<div class="empty-space">
+          <div class='form-group field faded visible'>
+            <label class='control-label'>Invite ${index}: </label>
+            <input class='col-xs-12 col-sm-6 form-control' type="email" name="email" placeholder='email'>
+          </div>`);
       $('.field').last().slideDown('fast', function() {
         $('.field').first().addClass('transition').removeClass('faded').addClass('unfaded').removeClass('field');
       $(emails[emails.length - 1]).focus();
@@ -25,7 +29,11 @@ $(() => {
       e.preventDefault(); 
       index += 1; 
 
-      $('.field').append(`<div class="empty-space"></div><p class="field faded transition none">Invite ${index}: <input type='email' name="email" placeholder="email"></p>`);
+      $('.field').append(`<div class="empty-space">
+          <div class='form-group field faded visible'>
+            <label class='control-label'>Invite ${index}: </label>
+            <input class='col-xs-12 col-sm-6 form-control' type="email" name="email" placeholder='email'>
+          </div>`);
       $('.field').last().slideDown('fast', function() {
         $('.field').first().addClass('transition').removeClass('faded').addClass('unfaded').removeClass('field');
       $(emails[emails.length - 1]).focus();
