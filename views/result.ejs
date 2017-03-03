@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-
+    
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -21,28 +21,44 @@
   </head>
 
   <body>
-    <!-- Nav Bar --> 
+
+    <!-- Nav Bar -->
     <nav>
       <div>
         <button>Decidr</button>
       </div>
-      <h2>Poll Invitations</h2> 
+      <h1>Poll Results</h1>
+      <div><%= votes[0] %> out of <%= votes[1] %> voted</div?
     </nav>
 
-    <!-- Content --> 
+    <!-- Content -->
     <main>
 
-      <section> 
-        <form method=POST action=#>
-          <p>Email 1: <input type="email" name="email"></p>
-          <p>Email 2: <input type="email" name="email"></p>
-          <p>Email 3: <input type="email" name="email"></p>
-          <p>Email 4: <input type="email" name="email"></p>
-          <div>Add More Emails</div>
-          <div>Email Poll</div>
-        </form>
+      <section>
+        <p>Poll Question: <%= poll.question %></p>
+        <p>Event Date: <%= poll.datetime_event %></p>
       </section>
 
-    </main> 
+      <section>
+        Table of Results
+        <table>
+          <thead>
+            <tr>
+              <th>Option</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let option of rank_order) { %>
+            <tr>
+              <td><%= choice[poll.poll_id][option[0]].choice_name %></td>
+              <td><%= option[1]  %></td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </section>
+
+    </main>
   </body>
 </html>

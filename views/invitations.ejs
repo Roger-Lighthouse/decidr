@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-    
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -21,31 +21,29 @@
   </head>
 
   <body>
-
-    <!-- Nav Bar --> 
+    <!-- Nav Bar -->
     <nav>
       <div>
         <button>Decidr</button>
       </div>
-      <h1>Poll Results</h1>
-      <div># out of # voted</div?
+      <h2>Poll Invitations</h2>
     </nav>
 
-    <!-- Content --> 
+    <!-- Content -->
     <main>
 
-      <section> 
-        <div>Poll Question <p>information</p></div>
+      <section>
+        <form method='POST' action='/invitations/<%= poll_id %>/<%= creator_user_id %>/<%= creator_url %>'>
+          <p>Email 1: <input type="email" name="email"></p>
+          <p>Email 2: <input type="email" name="email"></p>
+          <p>Email 3: <input type="email" name="email"></p>
+          <p>Email 4: <input type="email" name="email"></p>
+          <div>Add More Emails</div>
+          <div>Email Poll</div>
+          <button type='submit'>Submit</button>
+        </form>
       </section>
 
-      <section> 
-        <table>
-          <tr>
-            Table of Results 
-          <tr>
-        </table>
-      </section>
-      
-    </main> 
+    </main>
   </body>
 </html>
