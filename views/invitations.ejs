@@ -3,11 +3,7 @@
   <head>
     <title>Home Page</title>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-
-    <!-- Latest compiled and minified CSS -->
+    <!--      Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Optional theme -->
@@ -16,31 +12,39 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/index.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/nav-bar.css" type="text/css" />
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
+    <script type="text/javascript" src="/scripts/invitation-jquery.js"></script>
+
   </head>
 
   <body>
-    <!-- Nav Bar -->
-    <nav>
-      <div>
-        <button>Decidr</button>
-      </div>
-      <h2>Poll Invitations</h2>
-    </nav>
+
+    <% include ./partials/_nav-bar %>
 
     <!-- Content -->
-    <main>
+    <main class='container transition'>
 
-      <section>
-        <form method='POST' action='/invitations/<%= poll_id %>/<%= creator_user_id %>/<%= creator_url %>'>
-          <p>Email 1: <input type="email" name="email"></p>
-          <p>Email 2: <input type="email" name="email"></p>
-          <p>Email 3: <input type="email" name="email"></p>
-          <p>Email 4: <input type="email" name="email"></p>
-          <div>Add More Emails</div>
-          <div>Email Poll</div>
-          <button type='submit'>Submit</button>
+      <h2>Poll Invitations</h2>
+
+      <section class='well col-xs-12 transition'>
+        <form class='list col-xs-10 col-sm-10 col-sm-offset-1 col-xs-offset-1 transition' method=POST action='/invitations/<%= poll_id %>/<%= creator_user_id %>/<%= creator_url %>'>
+          <div class='form-group'>
+            <label class='control-label'>Invite 1: </label>
+            <input class='form-control col-xs-12 col-sm-6' type='email' name="email" placeholder='email'>
+          </div>
+
+          <div class='form-group field faded visible'>
+            <label class='control-label'>Invite 2: </label>
+            <input class='col-xs-12 col-sm-6 form-control' type="email" name="email" placeholder='email'>
+          </div>
+
+          <input class='btn-small' type='submit' value='Send Out Poll'>
         </form>
       </section>
 
