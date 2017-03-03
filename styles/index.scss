@@ -1,6 +1,8 @@
 @import 'base.scss'; 
 
 .container {
+  padding-top: 120px;
+  margin: auto; 
   .row {
     .btn-custom {
       background-color: $red;
@@ -63,4 +65,8 @@
 
 .empty-space {
   margin-top: 10px; 
+}
+
+.remove-left-padding {
+  padding-left: 0px; 
 }
