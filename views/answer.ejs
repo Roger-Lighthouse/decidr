@@ -25,15 +25,24 @@
     <main>
 
       <section>
-        <div>Poll Question <p><%= poll_question %></p></div>
-        <div>Event Date <p><%= %></p></div>
+        <div><p>Poll Question: <%= poll.question %></p></div>
+        <div><p>Event Date: <%= poll.datetime_event %></p></div>
       </section>
 
       <section>
-        <p>Options</p>
-        <form method=POST action=#>
-          <h2>Rearrange</h2>
-            <div>Chosen Options to be shifted around</div>
+        <h2>Rearrange</h2>
+        <div>Chosen Options to be shifted around</div>
+        <form method=POST action='/answer/<%= poll.poll_id %>/<%= user_id %>/<%= url_id %>'>
+          <ul>
+            <% for (let i in choices) { %>
+              <li><select name="<%= `${Number(i)+1}` %>" multiple>
+              <% for (let option of choices) { %>
+                <option value="<%= option[1] %>"><%= option[0] %></option>
+              <% } %>
+              </select></li>
+            <% } %>
+          </ul>
+          <button type='submit'>Submit</button>
         </form>
       </section>
 
