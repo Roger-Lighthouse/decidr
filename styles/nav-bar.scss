@@ -1,9 +1,11 @@
 @import 'base.scss'; 
 
 .container-fluid {
+  z-index: 1; 
   padding: 0px; 
   margin: 0px; 
   width: 100%;
+  position: fixed; 
   .navbar {
     border-radius: 0px; 
     background-color: $red;
