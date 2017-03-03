@@ -45,37 +45,10 @@ app.use(methodOverride('_method'))
 app.use(express.static("public"));
 
 // Mount all resource routes
-<<<<<<< HEAD
 app.use("/api/users", usersRoutes(knex));
 app.use("/notify", notifyRoutes());
-=======
-// app.use("/api/users", usersRoutes(knex));
 app.use("/", routes());
->>>>>>> routes_and_html
 
-
-<<<<<<< HEAD
-// Invitations Page
-app.get("/invitations", (req, res) => {
-  res.render("poll_invitations");
-});
-
-// Poll Confirmations Page
-app.get("/confirm", (req, res) => {
-  res.render("poll_invitations_confirm");
-});
-
-// Reponse Page
-app.get("/response", (req, res) => {
-  res.render("poll_answers");
-});
-
-// Results page
-app.get("/results", (req, res) => {
-  res.render("poll_results");
-});
-=======
->>>>>>> routes_and_html
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
