@@ -41,3 +41,37 @@ $(() => {
     //Ok you handle it here
   };
 */
+
+  $('#answer_form').on('submit', (ev) => {
+    ev.preventDefault();
+    console.log("Got In answer");
+      let theVal = $('#ind-tweet').find("input[type=text], textarea").val();
+
+      // if(theVal === '' || theVal.length > 140){
+      //   alert("Invalid Data!!");
+      // }else{
+      //   // read the data from the form inputs
+      //    const data_obj = {};
+      //    $('#ind_tweet').serializeArray().forEach((elm) => {
+      //      data_obj[elm.name] = elm.value;
+      //    });
+      //   // submit the info -- make POST request via ajax
+      //   $.ajax({
+      //     method: 'POST',
+      //     url: '/tweets',
+      //     data: $('#ind-tweet').serialize()
+      //   })
+      //   .done((result) => {
+      //     for(key in result){
+      //       console.log(key, result[key])
+      //     }
+      //       $('#ind-tweet').find("input[type=text], textarea").val(result["name"]+'  '+result.address+'  '+result.phone);
+      //       $('.new-tweet .counter').text('140');
+      //     loadTweets();
+      //   })
+      //   .fail(console.error);
+      // }
+
+  });
+
+

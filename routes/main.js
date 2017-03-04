@@ -6,7 +6,7 @@ const express = require('express');
 const router  = express.Router();
 const fs = require('fs');
 const fake_db = require('../db/fake_db');
-const helper = require('helper');
+const helper = require('../routes/helper');
 
 
 
@@ -113,10 +113,12 @@ module.exports = () => {
       res.status(400).send(`<h1>400 Error: </h1><p>Left field blank.</p><a href='/'>Try starting again.</a>`);
     }
 
+    let choice = fake_db.choice;
     const choices = [];
     for (let key of Object.keys(choice[req.params.pollId])) {
       choices.push([fake_db.choice[req.params.pollId][key].choice_name, key]);
     }
+    let poll = ''
     const resLocals = {
       poll: poll[req.params.pollId],
       choices: choices,

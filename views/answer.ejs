@@ -41,8 +41,7 @@
 
       <section class='well'>
         <h2>Rearrange</h2>
-        <p>Drag options from favourite to least favourite:</p>
-        <form id='form' method=POST action='/answer/<%= poll.poll_id %>/<%= user_id %>/<%= url_id %>'>
+        <form id='answer_form' method=POST action='/answer/<%= poll.poll_id %>/<%= user_id %>/<%= url_id %>'>
           <ul id='sortable'>
             <% for (let options of choices) { %>
               <li>
