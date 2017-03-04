@@ -4,6 +4,7 @@
     <title>Home Page</title>
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -14,24 +15,33 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/index.css" type="text/css" />
     <link rel="stylesheet" href="/styles/nav-bar.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/create-poll.css" type="text/css" />
+
+
     <script type="text/javascript" src="/scripts/confirm-jquery.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
+    <script type="text/javascript" src="/scripts/create-poll.js"></script>
   </head>
 
   <body>
 
     <% include ./partials/_nav-bar %>
 
+    <!-- Modal content -->
+    <div id="user-modal" class="modal">
+      <button class='btn-create modal-form modal-content'>CREATE POLL!</button>
+    </div>
+
+
+
     <!-- Content -->
     <main class='container'>
       <section class='row'>
-        <div class='col-xs-offset-1 col-md-offset-6'></div>
-        <button class='btn-custom col-xs-4 .col-xs-offset-1'>Poll Invitations</button>
         <div class='well col-xs-12 col-sm-8 .col-xs-offset-1'>
           <form method=POST action='/'>
             <p>Email: <input class='form-control col-xs-12 col-md-4' type="email" name="email"></p>
@@ -41,7 +51,6 @@
             <div class='form-group'>
               <label class='control-label'>Option 1: </label>
               <input class='form-control col-xs-12 col-sm-6' type='text' name="option" placeholder='What do you want to do?'>
-              // need to change the jquery to options
             </div>
 
             <div class='form-group field faded visible'>
