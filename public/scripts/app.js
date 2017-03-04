@@ -50,10 +50,19 @@ $(() => {
    //   console.log(elm.value);
    // });
 
-   var x = $('#answer_form').serializeArray();
+   var x = $('.choices');
      //data_obj[elm.name] = elm.value;
-     console.log(x);
+     // for(let i=0; i<x.length;i++){
+     //   console.log($(x[i]).text());
+     // }
   // });
+     //x.forEach((element) =>{
+     //  console.log($(element).text().trim());
+     //});
+     for(element of x){
+       console.log($(element).text().trim());
+
+     }
 
 
       //let theVal = $('#ind-tweet').find("input[type=text], textarea").val();
