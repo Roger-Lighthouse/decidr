@@ -1,4 +1,14 @@
-// const Mailgun  = require('mailgun-js');
+const Mailgun = require('mailgun-js');
+const mailgun = new Mailgun({apiKey: process.env.api_key, domain: process.env.domain});
+
+
+module.exports.mailgun = mailgun.messages().send(data, function (err, body) {
+        //If there is an error, render the error page
+    if (err) {
+        console.log("got an error: ", err);
+    }
+});
+
 
 
 // module.exports.mailgun = new Mailgun({apiKey: process.env.api_key, domain: process.env.domain});
