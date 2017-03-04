@@ -23,6 +23,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
     <script type="text/javascript" src="/scripts/draggable.js"></script>
+    <script type="text/javascript" src="/scripts/ajax.js"></script>
 
   </head>
 
@@ -41,7 +42,7 @@
       <section class='well'>
         <h2>Rearrange</h2>
         <p>Drag options from favourite to least favourite:</p>
-        <form method=POST action='/answer/<%= poll.poll_id %>/<%= user_id %>/<%= url_id %>'>
+        <form id='form' method=POST action='/answer/<%= poll.poll_id %>/<%= user_id %>/<%= url_id %>'>
           <ul id='sortable'>
             <% for (let options of choices) { %>
               <li>
