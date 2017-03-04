@@ -9,7 +9,6 @@ $(() => {
   // });;
 
   // console.log(dataHTML);
-});
 
 
 
@@ -44,8 +43,20 @@ $(() => {
 
   $('#answer_form').on('submit', (ev) => {
     ev.preventDefault();
-    console.log("Got In answer");
-      let theVal = $('#ind-tweet').find("input[type=text], textarea").val();
+    console.log("***********************Got In answer");
+
+   // $('#answer_form').serializeArray().forEach((elm) => {
+   //   //data_obj[elm.name] = elm.value;
+   //   console.log(elm.value);
+   // });
+
+   var x = $('#answer_form').serializeArray();
+     //data_obj[elm.name] = elm.value;
+     console.log(x);
+  // });
+
+
+      //let theVal = $('#ind-tweet').find("input[type=text], textarea").val();
 
       // if(theVal === '' || theVal.length > 140){
       //   alert("Invalid Data!!");
@@ -75,3 +86,4 @@ $(() => {
   });
 
 
+});

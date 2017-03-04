@@ -120,7 +120,7 @@ module.exports = () => {
     }
     let poll = ''
     const resLocals = {
-      poll: poll[req.params.pollId],
+      poll: fake_db.poll[req.params.pollId],
       choices: choices,
       user_id: req.params.userId,
       url_id: req.params.urlId
@@ -128,8 +128,10 @@ module.exports = () => {
     res.render("answer", resLocals);
   });
 
+
   router.post("/answer/:pollId/:userId/:urlId", (req, res) => {
     console.log('res.body', req.body);
+    let selection = fake_db.selection;
     selection[req.params.pollId][req.params.userId] = {};
 
     for (let rank of Object.keys(req.body)) {
