@@ -44,12 +44,16 @@ $(() => {
   $('#answer_form').on('submit', (ev) => {
     ev.preventDefault();
     console.log("***********************Got In answer");
-
-   var x = $('.choices');
-     for(element of x){
-       console.log($(element).text().trim());
-
+    data={}
+    var x = $('.choices');
+    for(element of x){
+      let ans = $(element).text().trim();
+      data[$(element).attr('name')] = ans;
+      console.log($(element).text().trim());
      }
+    let pollId = $('.choices').attr('data-pollId');
+    let userId = $('.choices').attr('data-user_id');
+    let urlId = $('.choices').attr('data-url_id');
 
 //action='/answer/<%= poll.poll_id %>/<%= user_id %>/<%= url_id %>'
       //let theVal = $('#ind-tweet').find("input[type=text], textarea").val();
@@ -63,21 +67,18 @@ $(() => {
       //      data_obj[elm.name] = elm.value;
       //    });
       //   // submit the info -- make POST request via ajax
-      //   $.ajax({
-      //     method: 'POST',
-      //     url: '/tweets',
-      //     data: $('#ind-tweet').serialize()
-      //   })
-      //   .done((result) => {
-      //     for(key in result){
-      //       console.log(key, result[key])
-      //     }
-      //       $('#ind-tweet').find("input[type=text], textarea").val(result["name"]+'  '+result.address+'  '+result.phone);
-      //       $('.new-tweet .counter').text('140');
-      //     loadTweets();
-      //   })
-      //   .fail(console.error);
-      // }
+        $.ajax({
+          method: 'POST',
+          url: '/answer/' + pollId +'/' + userId +'/' +urlId,
+          data: data                // {id:5, value: 'nut'}                    //$('.choices').serializeArray()
+        })
+        .done((result) => {
+          for(key in result){
+            console.log(key, result[key])
+          }
+        })
+        .fail(console.error);
+
 
   });
 
