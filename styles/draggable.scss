@@ -1,0 +1,10 @@
+@import 'base.scss'; 
+
+#sortable { 
+  color: snow;
+  .choices {
+    background-color: $lightred;
+    border: 1px solid $darkred; 
+    border-radius: 5px;  
+  }
+}

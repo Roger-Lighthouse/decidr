@@ -157,6 +157,7 @@ module.exports = () => {
   });
 
   router.post("/answer/:pollId/:userId/:urlId", (req, res) => {
+    console.log('res.body', res.body);
     selection[req.params.pollId][req.params.userId] = {};
 
     for (let rank of Object.keys(req.body)) {
