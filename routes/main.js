@@ -5,60 +5,18 @@ const checkEmails = require('../lib/checkEmails');
 const express = require('express');
 const router  = express.Router();
 const fs = require('fs');
+const fake_db = require('../db/fake_db');
+const helper = require('helper');
 
-const poll = {sLFxN1:
-   { poll_id: 'sLFxN1',
-     creator_user_id: 'b0BmHg',
-     datetime_created: 1488498640532,
-     datetime_closed: null,
-     datetime_event: '2017-03-02',
-     question: '1',
-     creator_url: 'X7aBJj'}};
-const users = {b0BmHg: { id: 'b0BmHg', email: '1@test.com' },
-  dAatr7: { id: 'dAatr7', email: 'a@test.com' },
-  NFpKw4: { id: 'NFpKw4', email: 'b@test.com' },
-  spLX8Q: { id: 'spLX8Q', email: 'c@test.com' },
-  Hyhfj4: { id: 'Hyhfj4', email: 'd@test.com' }};
-const invite = { 'sLFxN1': {
-'b0BmHg':'X7aBJj',
-'dAatr7':'dAatr7',
-'NFpKw4':'NFpKw4',
-'spLX8Q':'spLX8Q',
-'Hyhfj4':'Hyhfj4'}};
-const choice = { 'sLFxN1':
-   { 'fOavU9':
-      { id: 'fOavU9',
-        poll_id: 'sLFxN1',
-        choice_name: 'one',
-        choice_description: '' },
-     '3l5D14':
-      { id: '3l5D14',
-        poll_id: 'sLFxN1',
-        choice_name: 'two',
-        choice_description: '' },
-     '2JnOxu':
-      { id: '2JnOxu',
-        poll_id: 'sLFxN1',
-        choice_name: 'three',
-        choice_description: '' },
-     '0qFQGp':
-      { id: '0qFQGp',
-        poll_id: 'sLFxN1',
-        choice_name: 'four',
-        choice_description: '' },
-     'FcAgK2':
-      { id: 'FcAgK2',
-        poll_id: 'sLFxN1',
-        choice_name: 'five',
-        choice_description: '' } } };
-const selection = {'sLFxN1': {} };
+
 
 module.exports = () => {
 
   // Home page aka create poll
-  router.get("/", (req, res) => {
+  router.get("/results", (req, res) => {
     res.render("index");
   });
+
   router.post("/", (req, res) => {
     if (!(req.body.email
         && req.body.question
@@ -76,7 +34,7 @@ module.exports = () => {
     // mailgun goes here. After confirmation:
     const pollId = generateRandomString(poll);
     const creatorUrl = generateRandomString({});
-    poll[pollId] = {
+    fake_db.poll[pollId] = {
       poll_id: pollId,
       creator_user_id: req.session.user_id,
       datetime_created: Date.now(),
@@ -85,13 +43,13 @@ module.exports = () => {
       question: req.body.question,
       creator_url: creatorUrl
     };
-    invite[pollId] = {};
-    invite[pollId][req.session.user_id] = creatorUrl;
-    choice[pollId] = {};
-    selection[pollId] = {};
+    fake_db.invite[pollId] = {};
+    fake_db.invite[pollId][req.session.user_id] = creatorUrl;
+    fake_db.choice[pollId] = {};
+    fake_db.selection[pollId] = {};
     for (let option of req.body.option) {
       let choice_id = generateRandomString({});
-      choice[pollId][choice_id] = {
+      fake_db.choice[pollId][choice_id] = {
         id: choice_id,
         poll_id: pollId,
         choice_name: option,
@@ -118,34 +76,46 @@ module.exports = () => {
 
     for (let email of emails) {
       let key = checkEmails(users, req.body.email);
+      let userId;
       if (key) {
-        invite[req.params.pollId][key] = generateRandomString({});
+        fake_db.invite[req.params.pollId][key] = generateRandomString({});
+        userId=key;
       } else {
         const id = generateRandomString(users);
         users[id] = { id: id,
                       email: email};
-        invite[req.params.pollId][id] = generateRandomString({});
+        fake_db.invite[req.params.pollId][id] = generateRandomString({});
+        userId=id;
       }
-      // mail gun code goes here or after the curly bracket
+
+      // mail gun code goes here as it loops through every user
+      email //email
+      req.params.pollId //poll_id
+      userId // user_id
+      fake_db.invite[req.params.pollId][userId] //url code/id
+      helper.sendEmail(email, "Poll Invite!!", 'Poll ID:' + req.params.pollId + '   UserID:' +
+        userId + '  URL:' + fake_db.invite[req.params.pollId][userId]);
+
     }
     console.log('invites:',invite);
+
 
     res.redirect(`/answer/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
   });
 
   // Reponse Page http://localhost:8080/answer/sLFxN1/b0BmHg/X7aBJj
   router.get("/answer/:pollId/:userId/:urlId", (req, res) => {
-    console.log(invite[req.params.pollId]);
-    if (!(invite[req.params.pollId]
-        && invite[req.params.pollId][req.params.userId]
-        && req.params.urlId === invite[req.params.pollId][req.params.userId])) {
+    console.log(fake_db.invite[req.params.pollId]);
+    if (!(fake_db.invite[req.params.pollId]
+        && fake_db.invite[req.params.pollId][req.params.userId]
+        && req.params.urlId === fake_db.invite[req.params.pollId][req.params.userId])) {
       // change this to a proper error later
       res.status(400).send(`<h1>400 Error: </h1><p>Left field blank.</p><a href='/'>Try starting again.</a>`);
     }
 
     const choices = [];
     for (let key of Object.keys(choice[req.params.pollId])) {
-      choices.push([choice[req.params.pollId][key].choice_name, key]);
+      choices.push([fake_db.choice[req.params.pollId][key].choice_name, key]);
     }
     const resLocals = {
       poll: poll[req.params.pollId],
@@ -214,3 +184,53 @@ module.exports = () => {
 
   return router;
 }
+
+
+/*
+ const poll = {sLFxN1:
+//    { poll_id: 'sLFxN1',
+//      creator_user_id: 'b0BmHg',
+//      datetime_created: 1488498640532,
+//      datetime_closed: null,
+//      datetime_event: '2017-03-02',
+//      question: '1',
+//      creator_url: 'X7aBJj'}};
+// const users = {b0BmHg: { id: 'b0BmHg', email: '1@test.com' },
+//   dAatr7: { id: 'dAatr7', email: 'a@test.com' },
+//   NFpKw4: { id: 'NFpKw4', email: 'b@test.com' },
+//   spLX8Q: { id: 'spLX8Q', email: 'c@test.com' },
+//   Hyhfj4: { id: 'Hyhfj4', email: 'd@test.com' }};
+// const invite = { 'sLFxN1': {
+//                             'b0BmHg':'X7aBJj',
+//                             'dAatr7':'dAatr7',
+//                             'NFpKw4':'NFpKw4',
+//                             'spLX8Q':'spLX8Q',
+//                             'Hyhfj4':'Hyhfj4'}};
+// const choice = { 'sLFxN1':
+//    { 'fOavU9':
+//       { id: 'fOavU9',
+//         poll_id: 'sLFxN1',
+//         choice_name: 'one',
+//         choice_description: '' },
+//      '3l5D14':
+//       { id: '3l5D14',
+//         poll_id: 'sLFxN1',
+//         choice_name: 'two',
+//         choice_description: '' },
+//      '2JnOxu':
+//       { id: '2JnOxu',
+//         poll_id: 'sLFxN1',
+//         choice_name: 'three',
+//         choice_description: '' },
+//      '0qFQGp':
+//       { id: '0qFQGp',
+//         poll_id: 'sLFxN1',
+//         choice_name: 'four',
+//         choice_description: '' },
+//      'FcAgK2':
+//       { id: 'FcAgK2',
+//         poll_id: 'sLFxN1',
+//         choice_name: 'five',
+//         choice_description: '' } } };
+// const selection = {'sLFxN1': {} };
+*/

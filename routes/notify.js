@@ -6,6 +6,7 @@ const router  = express.Router();
 const Mailgun  = require('mailgun-js');
 const twilCli  = require('../twilio/twilioClient');
 const mailgun = require("../notify/mailgun");
+const fake_db = require("../db/fake_db");
 
 
 module.exports = () => {
@@ -34,6 +35,14 @@ module.exports = () => {
    });
  });
 */
+ router.get("/result", (req, res) =>{
+   res.render("result", fake_db);
+ });
+
+ router.get("/poll_results", (req, res) =>{
+   res.render("poll_results", fake_db);
+ });
+
 
  router.post("/send_email", (req, res) => {
    let to =  req.body.to;
