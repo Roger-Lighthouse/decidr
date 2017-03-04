@@ -13,11 +13,12 @@ const helper = require('../routes/helper');
 module.exports = () => {
 
   // Home page aka create poll
-  router.get("/results", (req, res) => {
+  router.get("/", (req, res) => {
     res.render("index");
   });
 
   router.post("/", (req, res) => {
+    let users = fake_db.users;
     if (!(req.body.email
         && req.body.question
         && req.body.date)) {
@@ -32,6 +33,7 @@ module.exports = () => {
     }
 
     // mailgun goes here. After confirmation:
+    let poll = fake_db.poll;
     const pollId = generateRandomString(poll);
     const creatorUrl = generateRandomString({});
     fake_db.poll[pollId] = {
@@ -69,22 +71,25 @@ module.exports = () => {
 
   // Invitations Page
   router.get("/invitations/:pollId/:userId/:urlId", (req, res) => {
+    let poll = fake_db.poll;
     res.render("invitations", poll[req.params.pollId]);
   });
   router.post("/invitations/:pollId/:userId/:urlId", (req, res) => {
     const emails = req.body.email;
 
     for (let email of emails) {
+      let users = fake_db.users;
+      let invite = fake_db.invite;
       let key = checkEmails(users, req.body.email);
       let userId;
       if (key) {
-        fake_db.invite[req.params.pollId][key] = generateRandomString({});
+        invite[req.params.pollId][key] = generateRandomString({});
         userId=key;
       } else {
         const id = generateRandomString(users);
         users[id] = { id: id,
                       email: email};
-        fake_db.invite[req.params.pollId][id] = generateRandomString({});
+        invite[req.params.pollId][id] = generateRandomString({});
         userId=id;
       }
 
@@ -92,12 +97,12 @@ module.exports = () => {
       email //email
       req.params.pollId //poll_id
       userId // user_id
-      fake_db.invite[req.params.pollId][userId] //url code/id
+      invite[req.params.pollId][userId] //url code/id
       helper.sendEmail(email, "Poll Invite!!", 'Poll ID:' + req.params.pollId + '   UserID:' +
-        userId + '  URL:' + fake_db.invite[req.params.pollId][userId]);
+        userId + '  URL:' + invite[req.params.pollId][userId]);
 
     }
-    console.log('invites:',invite);
+    //console.log('invites:',invite);
 
 
     res.redirect(`/answer/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
@@ -105,22 +110,23 @@ module.exports = () => {
 
   // Reponse Page http://localhost:8080/answer/sLFxN1/b0BmHg/X7aBJj
   router.get("/answer/:pollId/:userId/:urlId", (req, res) => {
-    console.log(fake_db.invite[req.params.pollId]);
-    if (!(fake_db.invite[req.params.pollId]
-        && fake_db.invite[req.params.pollId][req.params.userId]
-        && req.params.urlId === fake_db.invite[req.params.pollId][req.params.userId])) {
+      let invite = fake_db.invite;
+      if (!(invite[req.params.pollId]
+        && invite[req.params.pollId][req.params.userId]
+        && req.params.urlId === invite[req.params.pollId][req.params.userId])) {
       // change this to a proper error later
       res.status(400).send(`<h1>400 Error: </h1><p>Left field blank.</p><a href='/'>Try starting again.</a>`);
     }
 
     let choice = fake_db.choice;
+    let poll =fake_db.poll;
     const choices = [];
     for (let key of Object.keys(choice[req.params.pollId])) {
       choices.push([fake_db.choice[req.params.pollId][key].choice_name, key]);
     }
-    let poll = ''
+
     const resLocals = {
-      poll: fake_db.poll[req.params.pollId],
+      poll: poll[req.params.pollId],
       choices: choices,
       user_id: req.params.userId,
       url_id: req.params.urlId
@@ -148,7 +154,7 @@ module.exports = () => {
     // console.log('polls:', poll);
     // console.log('users:', users);
     // console.log('choice:', choice);
-    console.log('selection:', selection);
+    //console.log('selection:', selection);
 
 
     const score = {};

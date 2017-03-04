@@ -45,26 +45,13 @@ $(() => {
     ev.preventDefault();
     console.log("***********************Got In answer");
 
-   // $('#answer_form').serializeArray().forEach((elm) => {
-   //   //data_obj[elm.name] = elm.value;
-   //   console.log(elm.value);
-   // });
-
    var x = $('.choices');
-     //data_obj[elm.name] = elm.value;
-     // for(let i=0; i<x.length;i++){
-     //   console.log($(x[i]).text());
-     // }
-  // });
-     //x.forEach((element) =>{
-     //  console.log($(element).text().trim());
-     //});
      for(element of x){
        console.log($(element).text().trim());
 
      }
 
-
+//action='/answer/<%= poll.poll_id %>/<%= user_id %>/<%= url_id %>'
       //let theVal = $('#ind-tweet').find("input[type=text], textarea").val();
 
       // if(theVal === '' || theVal.length > 140){

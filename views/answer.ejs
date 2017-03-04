@@ -23,8 +23,9 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
     <script type="text/javascript" src="/scripts/draggable.js"></script>
+<!--
     <script type="text/javascript" src="/scripts/ajax.js"></script>
-
+-->
   </head>
 
   <body>
@@ -41,7 +42,7 @@
 
       <section class='well'>
         <h2>Rearrange</h2>
-        <form id='answer_form' method=POST action='/answer/<%= poll.poll_id %>/<%= user_id %>/<%= url_id %>'>
+        <form id='answer_form' method='POST'>
           <ul id='sortable'>
             <% for (let options of choices) { %>
               <li>
