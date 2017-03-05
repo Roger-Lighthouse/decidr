@@ -36,8 +36,8 @@
     <main class='container transition'>
 
       <section class='well'>
-        <div><p><b>Poll Question: </b><%= poll.question %></p></div>
-        <div><p><b>Event Date: </b><%= poll.datetime_event %></p></div>
+        <div><p>Poll Question: <%= poll.question %></p></div>
+        <div><p>Event Date: <%= poll.datetime_event %></p></div>
       </section>
 
       <section class='well'>
@@ -46,8 +46,9 @@
           <ul id='sortable'>
             <% for (let options of choices) { %>
               <li>
-                <fieldset class='choices' name="<%= `${options[1]}` %>" multiple>
-                  <b><%= `${options[0]}` %></b>
+                <fieldset class='choices' name="<%= `${options[1]}` %>" multiple  data-pollId='<%=poll.poll_id%>'
+                    data-user_id='<%=user_id%>' data-url_id='<%=url_id%>' >
+                  <%= `${options[0]}` %>
                 </fieldset>
               </li>
             <% } %>

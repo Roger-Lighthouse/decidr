@@ -144,8 +144,10 @@ module.exports = () => {
       let choice_id = req.body[rank];
       selection[req.params.pollId][req.params.userId][choice_id] = Number(rank);
     }
+    const client = {name: "Any Time", address: "46 Spadina Avenue", phone: "647-342-3363"};
+        res.status(201).json(client);
 
-    res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`)
+    //res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`)
   });
 
   // Results page
