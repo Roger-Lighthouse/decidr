@@ -264,8 +264,8 @@ module.exports = (knex) => {
     //     res.status(201).json(client);
 
     knex.table('selection').insert(multiRowInsert)
-    .then( () => {
-      res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`)
+    .then( (results) => {
+      return res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
     })
   });
 
