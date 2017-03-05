@@ -245,7 +245,7 @@ module.exports = (knex) => {
 
 
   router.post("/answer/:pollId/:userId/:urlId", (req, res) => {
-    // console.log('res.body', req.body);
+    console.log('res.body', req.body);
     // let selection = fake_db.selection;
     // selection[req.params.pollId][req.params.userId] = {};
 
@@ -260,12 +260,13 @@ module.exports = (knex) => {
         rank: Number(rank)
       })
     }
+    console.log('multiRowInsert:',multiRowInsert);
     // const client = {name: "Any Time", address: "46 Spadina Avenue", phone: "647-342-3363"};
     //     res.status(201).json(client);
 
     knex.table('selection').insert(multiRowInsert)
     .then( () => {
-      res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
+      return res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
     })
   });
 
@@ -315,7 +316,7 @@ module.exports = (knex) => {
       return knex.countDistinct('user_id').from('selection').where('poll_id', req.params.pollId);
     })
     .then( (user_count) => {
-      // console.log('votes:',user_count);
+      console.log('votes:',user_count);
       votes = [user_count[0].count, poll_users.length];
 
       const choicesRankOrder = [];

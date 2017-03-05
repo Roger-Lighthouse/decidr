@@ -58,6 +58,23 @@ $(() => {
     let userId = $('.choices').attr('data-user_id');
     let urlId = $('.choices').attr('data-url_id');
 
+    $.ajax({
+      method: 'POST',
+      url: '/answer/' + pollId +'/' + userId +'/' +urlId,
+      data: data                // {id:5, value: 'nut'}                    //$('.choices').serializeArray()
+    })
+    .done((response) => {
+      console.log('response' response.redirect);
+      if (response.redirect) {
+          window.location.href = response.redirect;
+          console.log('response insside if');
+      }
+      console.log('response finished');
+    })
+    .fail(console.error('test'));
+  });
+
+
 //action='/answer/<%= poll.poll_id %>/<%= user_id %>/<%= url_id %>'
       //let theVal = $('#ind-tweet').find("input[type=text], textarea").val();
 
@@ -70,21 +87,4 @@ $(() => {
       //      data_obj[elm.name] = elm.value;
       //    });
       //   // submit the info -- make POST request via ajax
-    $.ajax({
-      method: 'POST',
-      url: '/answer/' + pollId +'/' + userId +'/' +urlId,
-      data: data                // {id:5, value: 'nut'}                    //$('.choices').serializeArray()
-    })
-    .done((response) => {
-      console.log('response'response);
-      if (response.redirect) {
-          window.location.href = response.redirect;
-      }
-    })
-    // .fail(console.error);
-
-
-  });
-
-
 });
