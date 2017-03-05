@@ -27,11 +27,13 @@
 
     <main class='container transition'>
 
-      <h3>Poll Results</h3>
-
+      <section class='well'>
+        <h1>Poll Results</h1>
+        <div><%= votes[0] %> out of <%= votes[1] %> voted</div>
+      </section>
 
       <section class='well'>
-        <p>Poll Question: <%= poll.question %></p><br/>
+        <p>Poll Question: <%= poll.question %></p>
         <p>Event Date: <%= poll.datetime_event %></p>
       </section>
 
@@ -45,8 +47,14 @@
           </thead>
           <tbody>
             <tr>
-              <td>Eating pizza</td>
-              <td>25</td>
+              <td>
+              <% for (let name of choice) { %>
+                <% if (option[0] ===  name.id) { %>
+                  <%=  name.name %>
+                <% }; %>
+              <% }; %>
+              </td>
+              <td><%= option[1]  %></td>
             </tr>
           </tbody>
         </table>

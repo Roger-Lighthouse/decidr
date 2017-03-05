@@ -37,9 +37,8 @@
 
       <section class='well'>
         <div><p>Poll Question: <%= poll.question %></p></div>
-        <div><p>Event Date: <%= poll.datetime_event %></p></div>
-        <div><p>Poll ID: <%= poll.poll_id %></p></div>
-
+        <div><p>Event Date: <%= poll.created %></p></div>
+        <div><p>Poll ID: <%= poll.id %></p></div>
       </section>
 
       <section class='well'>
@@ -48,9 +47,9 @@
           <ul id='sortable'>
             <% for (let options of choices) { %>
               <li>
-                <fieldset class='choices' name="<%= `${options[1]}` %>" multiple  data-pollId='<%=poll.poll_id%>'
+                <fieldset class='choices' name="<%= `${option.id}` %>" multiple  data-pollId='<%=poll.id%>'
                     data-user_id='<%=user_id%>' data-url_id='<%=url_id%>' >
-                  <%= `${options[0]}` %>
+                  <%= `${option.name}` %>
                 </fieldset>
               </li>
             <% } %>
