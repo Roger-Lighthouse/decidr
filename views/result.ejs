@@ -14,12 +14,12 @@
 
     <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/index.css" type="text/css" />     
+    <link rel="stylesheet" href="/styles/index.css" type="text/css" />
     <link rel="stylesheet" href="/styles/nav-bar.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
-    
+
   </head>
 
   <body>
@@ -31,14 +31,14 @@
       <section class='well'>
         <h1>Poll Results</h1>
         <div><%= votes[0] %> out of <%= votes[1] %> voted</div>
-      </section> 
+      </section>
 
-      <section class='well'> 
+      <section class='well'>
         <p>Poll Question: <%= poll.question %></p>
         <p>Event Date: <%= poll.datetime_event %></p>
       </section>
 
-      <section class='well'> 
+      <section class='well'>
         <table>
           <thead>
             <tr>
@@ -49,7 +49,14 @@
           <tbody>
             <% for (let option of rank_order) { %>
             <tr>
-              <td><%= choice[poll.poll_id][option[0]].choice_name %></td>
+              <td>
+              <% for (let name of choice) { %>
+                <% if (option[0] ===  name.id) { %>
+                  <%=  name.name %>
+                <% }; %>
+              <% }; %>
+              </td>
+
               <td><%= option[1]  %></td>
             </tr>
             <% } %>
