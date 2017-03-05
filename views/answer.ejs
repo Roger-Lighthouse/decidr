@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Home Page</title>
+    <title>Answer Page</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -36,23 +36,23 @@
     <main class='container transition'>
 
       <section class='well'>
-        <div><p>Poll Question: <%= poll.question %></p></div>
-        <div><p>Event Date: <%= poll.datetime_event %></p></div>
+        <div><p><b>Poll Question: </b><%= poll.question %></p></div>
+        <div><p><b>Event Date: </b><%= poll.datetime_event %></p></div>
       </section>
 
       <section class='well'>
-        <h2>Rearrange</h2>
+        <h2 class='space'>Rearrange</h2>
         <form id='answer_form' method='POST'>
           <ul id='sortable'>
             <% for (let options of choices) { %>
               <li>
                 <fieldset class='choices' name="<%= `${options[1]}` %>" multiple>
-                  <%= `${options[0]}` %>
+                  <b><%= `${options[0]}` %></b>
                 </fieldset>
               </li>
             <% } %>
           </ul>
-          <button type='submit'>Submit</button>
+          <button class='btn-small' type='submit'> Decidr Now</button>
         </form>
 
       </section>
