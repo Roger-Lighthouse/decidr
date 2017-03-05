@@ -81,7 +81,7 @@ $(() => {
           window.location.href = response.redirect;
       }
     })
-    .fail(console.error);
+    // .fail(console.error);
 
 
   });

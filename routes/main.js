@@ -264,8 +264,8 @@ module.exports = (knex) => {
     //     res.status(201).json(client);
 
     knex.table('selection').insert(multiRowInsert)
-    .then( (results) => {
-      return res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
+    .then( () => {
+      res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
     })
   });
 
@@ -329,10 +329,7 @@ module.exports = (knex) => {
       resLocals.votes = votes;
 
       console.log('resLocals:',resLocals);
-      return resLocals;
-    })
-    .then( (resLocals) => {
-      return res.render("result", resLocals);
+      res.render("result", resLocals);
     })
 
   });
