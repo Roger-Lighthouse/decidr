@@ -1,6 +1,13 @@
 const twilCli  = require('../twilio/twilioClient');
 const Mailgun = require('mailgun-js');
 const mailgun = new Mailgun({apiKey: process.env.api_key, domain: process.env.domain});
+const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID , process.envTWILIO_AUTH_TOKEN);
+
+const my_url="http://twimlets.com/echo?Twiml=%3CResponse%3E%0A%20%20%20%20%3CSay%20voice%3D%22alice%22%3EIt%20is%20cold%20today%3C%2FSay%3E%0A%3C%2FResponse%3E&";
+const my_url1="http://twimlets.com/echo?Twiml=%3CResponse%3E%0A%20%20%20%20%3CSay%20voice%3D%22alice%22%3EDecide%20Mother%20Fucker%3C%2FSay%3E%0A%3C%2FResponse%3E&";
+const my_url2="http://twimlets.com/echo?Twiml=%3CResponse%3E%0A%20%20%20%20%3CSay%20voice%3D%22alice%22%3EAll%20I%20wanna%20know%20is%20where%20be%20you%3C%2FSay%3E%0A%3C%2FResponse%3E&";
+const my_url3="http://twimlets.com/echo?Twiml=%3CResponse%3E%0A%20%20%20%20%3CSay%20voice%3D%22alice%22%3EBig%20Dee%20let's%20go%20get%20some%20strippers%3C%2FSay%3E%0A%3C%2FResponse%3E&";
+const my_url4="http://twimlets.com/echo?Twiml=%3CResponse%3E%0A%20%20%20%20%3CSay%20voice%3D%22alice%22%3EPee%20Wee%20go%20back%20to%20sleep%20you%20meathead%3C%2FSay%3E%0A%3C%2FResponse%3E&";
 
 var helpers = {
 
@@ -73,7 +80,23 @@ var helpers = {
        console.log(err.message);
      }
     })
+  },
+
+
+  //https://www.twilio.com/labs/twimlets/echo
+  makeCall: (phone) => {
+    client.calls.create({
+        url: my_url4,
+        to: phone,
+        from: "+16475608949"
+    }, function(err, call) {
+        if(err){
+          console.log(err.message);
+        }
+        process.stdout.write(call.sid);
+    });
   }
+
 
 
 };

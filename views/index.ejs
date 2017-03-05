@@ -36,7 +36,7 @@
     <% include ./partials/_nav-bar %>
 
     <!-- Modal content -->
-    <div id="user-modal" class="modal">
+    <div id="user-modal" class="modal transition">
       <button class='btn-create modal-form modal-content'>CREATE POLL!</button>
     </div>
 
@@ -45,8 +45,8 @@
     <!-- Content -->
     <main class='container transition'>
       <section class='row'>
-        <div class='well col-xs-12 col-sm-8 .col-xs-offset-1'>
-          <form method=POST action='/'>
+        <div class='well col-xs-12 col-sm-12'>
+          <form class='list col-xs-10 col-sm-10 col-sm-offset-1 col-xs-offset-1 transition' method=POST action='/'>
             <p><b>Email: </b><input id='first' class='form-control col-xs-12 col-md-4' type="email" name="email"></p>
             <p><b>Question: </b><input class='form-control col-xs-12 col-md-4' type="text" name="question"></p>
             <p><b>Date: </b><input class='form-control col-xs-12 col-md-4'  type="datetime-local" name="date"></p>
