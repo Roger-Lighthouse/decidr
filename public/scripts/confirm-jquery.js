@@ -1,5 +1,8 @@
 $(() => {
-  $('#first').focus(); 
+  
+  $('#user-modal').click((e) => {
+    $('#first').focus(); 
+  });
   
   const list = $('.list');
   const add = $('.add');
