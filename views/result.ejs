@@ -46,6 +46,7 @@
             </tr>
           </thead>
           <tbody>
+            <% for (let option of rank_order) { %>
             <tr>
               <td>
               <% for (let name of choice) { %>
@@ -56,6 +57,7 @@
               </td>
               <td><%= option[1]  %></td>
             </tr>
+            <% }; %>
           </tbody>
         </table>
       </section>

@@ -45,7 +45,7 @@
         <h2 class='space'>Rearrange</h2>
         <form id='answer_form' method='POST'>
           <ul id='sortable'>
-            <% for (let options of choices) { %>
+            <% for (let option of choices) { %>
               <li>
                 <fieldset class='choices' name="<%= `${option.id}` %>" multiple  data-pollId='<%=poll.id%>'
                     data-user_id='<%=user_id%>' data-url_id='<%=url_id%>' >

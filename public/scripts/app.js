@@ -46,9 +46,12 @@ $(() => {
     console.log("***********************Got In answer");
     data={}
     var x = $('.choices');
-    for(element of x){
+    let i = 0;
+    for(let element of x){
+      i++
       let ans = $(element).text().trim();
-      data[$(element).attr('name')] = ans;
+      // data[$(element).attr('name')] = ans;
+      data[i] = $(element).attr('name');
       console.log($(element).text().trim());
      }
     let pollId = $('.choices').attr('data-pollId');
@@ -72,12 +75,12 @@ $(() => {
           url: '/answer/' + pollId +'/' + userId +'/' +urlId,
           data: data                // {id:5, value: 'nut'}                    //$('.choices').serializeArray()
         })
-        .done((result) => {
-          for(key in result){
-            console.log(key, result[key])
-          }
-        })
-        .fail(console.error);
+        // .done((result) => {
+        //   // for(key in result){
+        //   //   console.log(key, result[key])
+        //   // }
+        // })
+        // .fail(console.error);
 
 
   });
