@@ -6,7 +6,7 @@ $(() => {
   const field = $('.field');
   let index = 2;
 
-  $('.field').keydown((e) => {
+  $('.field').keyup((e) => {
     $('.field').last().addClass('unfaded').addClass('transition');
     let emails = $("[type='email']").toArray();
     if (field !== '' && emails[emails.length - 1].value) {

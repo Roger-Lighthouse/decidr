@@ -9,11 +9,11 @@ $(() => {
   const field = $('.field');
   let index = 2;
 
-  $('.field').keydown((e) => {
+  $('.field').keyup((e) => {
     $('.field').last().addClass('unfaded').addClass('transition');
     let options = $("[type='text']").toArray();
     if (field !== '' && options[options.length - 1].value) {
-      e.preventDefault(); 
+      e.preventDefault();
       index += 1; 
 
       $('.field').append(`<div class="empty-space">
