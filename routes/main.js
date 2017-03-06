@@ -183,7 +183,9 @@ module.exports = (knex) => {
           });
         });
       }
-
+      // console.log('invite', invite_url)
+      // sendEmail: (email, 'Decidr Poll' , invite_url);
+      
       // // mail gun code goes here as it loops through every user
       // email //email
       // req.params.pollId //poll_id
