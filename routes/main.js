@@ -32,33 +32,8 @@ module.exports = (knex) => {
     }
 
     // mailgun goes here. After confirmation:
-    // edit to user database
-    // let poll = fake_db.poll;
     const pollId = generateRandomString({});
     const creatorUrl = generateRandomString({});
-    // fake_db.poll[pollId] = {
-    //   poll_id: pollId,
-    //   creator_user_id: req.session.user_id,
-    //   datetime_created: Date.now(),
-    //   datetime_closed: null,
-    //   datetime_event: req.body.date,
-    //   question: req.body.question,
-    //   creator_url: creatorUrl
-    // };
-    // fake_db.invite[pollId] = {};
-    // fake_db.invite[pollId][req.session.user_id] = creatorUrl;
-    // fake_db.choice[pollId] = {};
-    // fake_db.selection[pollId] = {};
-    // for (let option of req.body.option) {
-    //   let choice_id = generateRandomString({});
-    //   fake_db.choice[pollId][choice_id] = {
-    //     id: choice_id,
-    //     poll_id: pollId,
-    //     choice_name: option,
-    //     choice_description: ''
-    //   };
-    // }
-    //
 
     knex.table('users')
     .insert({
@@ -67,16 +42,6 @@ module.exports = (knex) => {
     })
     .then( (id) => {
       // console.log(`Users Inserted Account ${id}`);
-      // poll[pollId] = {
-      //   poll_id: pollId,
-      //   creator_user_id: req.session.user_id,
-      //   datetime_created: Date.now(),
-      //   datetime_closed: null,
-      //   datetime_event: req.body.date,
-      //   question: req.body.question,
-      //   creator_url: creatorUrl
-      // };
-
       return knex.table('poll')
       .insert({
         'id'          : pollId,
@@ -90,8 +55,6 @@ module.exports = (knex) => {
     })
     .then( (id) => {
       // console.log(`Poll Inserted Account ${id}`);
-      // knex.select().from('poll').then((result) => {console.log(result);});
-
       return knex.table('invite')
       .insert({
         'poll_id'     : pollId,
@@ -103,7 +66,7 @@ module.exports = (knex) => {
       // console.log(`Invite Inserted Account ${id}`);
       const multiRowInsert = [];
 
-      for (let option of req.body.option) {
+      for (let option of req.body.option.slice(0,-1)) {
         let choice_id = generateRandomString({});
         multiRowInsert.push({
           'id'          : choice_id,
@@ -128,54 +91,33 @@ module.exports = (knex) => {
 
   // Invitations Page
   router.get("/invitations/:pollId/:userId/:urlId", (req, res) => {
-    // let poll = fake_db.poll;
-    // res.render("invitations", poll[req.params.pollId]);
     knex.select('id', 'creator_id', 'creator_url')
       .from("poll")
       .where('id', req.params.pollId)
       .then((results) => {
-        // console.log('poll results:', results);
         res.render("invitations", results[0]);
     })
   });
 
   router.post("/invitations/:pollId/:userId/:urlId", (req, res) => {
-    const emails = req.body.email;
+    const emails = req.body.email.slice(0,-1);
 
     for (let email of emails) {
-      // fake db code
-
-      // let users = fake_db.users;
-      // let invite = fake_db.invite;
-      // let key = checkEmails(users, req.body.email);
-      // let userId;
-      // if (key) {
-      //   invite[req.params.pollId][key] = generateRandomString({});
-      //   userId=key;
-      // } else {
-      //   const id = generateRandomString(users);
-      //   users[id] = { id: id,
-      //                 email: email};
-      //   invite[req.params.pollId][id] = generateRandomString({});
-      //   userId=id;
-
+      let id;
+      const invite_url = generateRandomString({});
       let key = checkEmails(knex, req.body.email);
       if (key) {
-        // invite[req.params.pollId][key] = generateRandomString({});
+        id = key;
         knex.table('invite').insert({
           poll_id    : req.params.pollId,
           user_id    : key,
-          invite_url : generateRandomString({})
+          invite_url : invite_url
         });
       } else {
-        const id = generateRandomString({});
-        // users[id] = { id    : id,
-        //               email : email};
-        const invite_url = generateRandomString({});
-        // invite[req.params.pollId][id] = invite_url;
+        id = generateRandomString({});
 
-        knex.table('users').insert({id:id,email:email})
-        .then(()=>{
+        knex.table('users').insert( { id: id, email: email } )
+        .then( () => {
           return knex.table('invite').insert({
             poll_id    : req.params.pollId,
             user_id    : id,
@@ -184,13 +126,9 @@ module.exports = (knex) => {
         });
       }
 
-      // // mail gun code goes here as it loops through every user
-      // email //email
-      // req.params.pollId //poll_id
-      // userId // user_id
-      // invite[req.params.pollId][userId] //url code/id
-      // helper.sendEmail(email, "Poll Invite!!", 'Poll ID:' + req.params.pollId + '   UserID:' +
-      //   userId + '  URL:' + invite[req.params.pollId][userId]);
+      // mail gun code to email invited users
+      helper.sendEmail(email, "Poll Invite!!", 'Poll ID:' + req.params.pollId + '   UserID:' +
+        id + '  URL: ' + `/answer/${req.params.pollId}/${id}/${invite_url}`);
 
     }
     //console.log('invites:',invite);
@@ -198,39 +136,44 @@ module.exports = (knex) => {
     res.redirect(`/answer/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
   });
 
-  // Reponse Page http://localhost:8080/answer/sLFxN1/b0BmHg/X7aBJj
+  // Reponse Page
   router.get("/answer/:pollId/:userId/:urlId", (req, res) => {
-    //   let invite = fake_db.invite;
-    //   if (!(invite[req.params.pollId]
-    //     && invite[req.params.pollId][req.params.userId]
-    //     && req.params.urlId === invite[req.params.pollId][req.params.userId])) {
-    //   // change this to a proper error later
-    //   res.status(400).send(`<h1>400 Error: </h1><p>Left field blank.</p><a href='/'>Try starting again.</a>`);
-    // }
+    const resLocals = {
+      user_id : req.params.userId,
+      url_id  : req.params.urlId
+    };
 
-    // let choice = fake_db.choice;
-    // let poll =fake_db.poll;
-    // const choices = [];
-    // for (let key of Object.keys(choice[req.params.pollId])) {
-    //   choices.push([fake_db.choice[req.params.pollId][key].choice_name, key]);
-    // }
-
+    // check to make sure user is invited and is using the correct urlId
     knex.select().from('invite')
       .where('poll_id', req.params.pollId)
       .andWhere('user_id', req.params.userId)
       .andWhere('invite_url', req.params.urlId)
     .then( (result) => {
+      console.log('check if they were invited result:', result);
       if (result.length === 0) {
         // change this to a proper error later
-        res.status(400).send(`<h1>400 Error: </h1><p>Left field blank.</p><a href='/'>Try starting again.</a>`);
-      }
-    });
+        res.status(400).send(`<h1>400 Error: </h1><p>You do not have access to this poll.</p><a href='/'>Try starting a new poll.</a>`);
+      };
 
-    const resLocals = {
-      user_id: req.params.userId,
-      url_id: req.params.urlId
-    };
-    knex.select().from('poll').where('id', req.params.pollId)
+      // Check to see if user has voted already
+      return knex.select().from('selection')
+        .where('poll_id', req.params.pollId)
+        .andWhere('user_id', req.params.userId)
+    })
+    .then( (result) => {
+      console.log('check if they voted already result:', result);
+      if (result.length !== 0) {
+        // change this to a proper error later
+        res.status(400).send(`<h1>400 Error: </h1><p>You have already voted in this poll.</p><a href='/'>Try starting a new poll.</a>`);
+      }
+    })
+    .then( () => {
+      return knex.select('email').from('users').where('id', req.params.userId);
+    })
+    .then( (result) => {
+      resLocals['user_mail'] = result[0].email;
+      return knex.select().from('poll').where('id', req.params.pollId);
+    })
     .then( (result) => {
       resLocals['poll'] = result[0];
       return knex.select().from('choice').where('poll_id', req.params.pollId);
@@ -240,45 +183,71 @@ module.exports = (knex) => {
       // console.log('choices:', results);
       // console.log('resLocal.poll:',resLocals.poll);
       res.render("answer", resLocals);
-    })
+    });
   });
 
 
   router.post("/answer/:pollId/:userId/:urlId", (req, res) => {
-    console.log('res.body', req.body);
-    // let selection = fake_db.selection;
-    // selection[req.params.pollId][req.params.userId] = {};
+    // check to make sure user is invited and is using the correct urlId
+    knex.select().from('invite')
+      .where('poll_id', req.params.pollId)
+      .andWhere('user_id', req.params.userId)
+      .andWhere('invite_url', req.params.urlId)
+    .then( (result) => {
+      console.log('check if they were invited result:', result);
+      if (result.length === 0) {
+        // change this to a proper error later
+        res.status(400).send(`<h1>400 Error: </h1><p>You do not have access to this poll.</p><a href='/'>Try starting a new poll.</a>`);
+      };
 
-    const multiRowInsert = [];
-    for (let rank of Object.keys(req.body)) {
-      let choice_id = req.body[rank];
-      // selection[req.params.pollId][req.params.userId][choice_id] = Number(rank);
-      multiRowInsert.push({
-        poll_id: req.params.pollId,
-        user_id: req.params.userId,
-        choice_id: choice_id,
-        rank: Number(rank)
-      })
-    }
-    console.log('multiRowInsert:',multiRowInsert);
-    // const client = {name: "Any Time", address: "46 Spadina Avenue", phone: "647-342-3363"};
-    //     res.status(201).json(client);
-
-    knex.table('selection').insert(multiRowInsert)
-    .then( () => {
-      return res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
+      // Check to see if user has voted already
+      return knex.select().from('selection')
+        .where('poll_id', req.params.pollId)
+        .andWhere('user_id', req.params.userId)
     })
-  });
+    .then( (result) => {
+      console.log('check if they voted already result:', result);
+      if (result.length !== 0) {
+        // change this to a proper error later
+        res.status(400).send(`<h1>400 Error: </h1><p>You have already voted in this poll.</p><a href='/'>Try starting a new poll.</a>`);
+      }
+    })
+    .then( () => {
+      const multiRowInsert = [];
+      for (let rank of Object.keys(req.body)) {
+        let choice_id = req.body[rank];
+        // selection[req.params.pollId][req.params.userId][choice_id] = Number(rank);
+        multiRowInsert.push({
+          poll_id: req.params.pollId,
+          user_id: req.params.userId,
+          choice_id: choice_id,
+          rank: Number(rank)
+        })
+      }
+      console.log('multiRowInsert:',multiRowInsert);
+      // const client = {name: "Any Time", address: "46 Spadina Avenue", phone: "647-342-3363"};
+      //     res.status(201).json(client);
 
+      return knex.table('selection').insert(multiRowInsert);
+    })
+    .then( () => {
+      res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
+    })
+  })
 
 
   // Results page
   router.get("/result/:pollId/:userId/:urlId", (req, res) => {
-    // console.log('invite:', invite);
-    // console.log('polls:', poll);
-    // console.log('users:', users);
-    // console.log('choice:', choice);
-    //console.log('selection:', selection);
+    knex.select().from('poll')
+      .where('id', req.params.pollId)
+      .andWhere('creator_id', req.params.userId)
+      .andWhere('creator_url', req.params.urlId)
+    .then( (result) => {
+      if (result.length === 0) {
+        // change this to a proper error later
+        res.status(400).send(`<h1>400 Error: </h1><p>You do not have access to this poll's results.</p><a href='/'>Try starting a new poll.</a>`);
+      }
+    });
 
     const score = {};
     let numOfChoices;

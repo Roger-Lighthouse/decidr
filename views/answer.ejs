@@ -3,6 +3,8 @@
   <head>
     <title>Answer Page</title>
 
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -12,7 +14,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/index.css" type="text/css" />
@@ -38,7 +40,7 @@
       <section class='well'>
         <div><p>Poll Question: <%= poll.question %></p></div>
         <div><p>Event Date: <%= poll.created %></p></div>
-        <div><p>Poll ID: <%= poll.id %></p></div>
+        <!-- <div><p>Poll ID: <%= poll.id %></p></div> -->
       </section>
 
       <section class='well'>
@@ -47,8 +49,8 @@
           <ul id='sortable'>
             <% for (let option of choices) { %>
               <li>
-                <fieldset class='choices' name="<%= `${option.id}` %>" multiple  data-pollId='<%=poll.id%>'
-                    data-user_id='<%=user_id%>' data-url_id='<%=url_id%>' >
+                <fieldset class='choices form-group' name="<%= `${option.id}` %>" multiple  data-pollId='<%=poll.id%>'
+                    data-user_id='<%=user_id%>' data-user_mail='<%=user_mail%>' data-url_id='<%=url_id%>' >
                   <%= `${option.name}` %>
                 </fieldset>
               </li>

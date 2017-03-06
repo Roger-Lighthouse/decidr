@@ -52,26 +52,38 @@ $(() => {
       let ans = $(element).text().trim();
       // data[$(element).attr('name')] = ans;
       data[i] = $(element).attr('name');
-      console.log($(element).text().trim());
+      // console.log($(element).text().trim());
      }
     let pollId = $('.choices').attr('data-pollId');
     let userId = $('.choices').attr('data-user_id');
+    let userMail = $('.choices').attr('data-user_mail');
     let urlId = $('.choices').attr('data-url_id');
+
+    // $.ajax({
+    //   method: "POST",
+    //   url: "/notify/send_text",
+    //   data: {phone: '+15195908180', message: `${userMail} voted`}//.stringify()
+    // })
+    // .done(() => {
+    //   //Ok you handle it here
+    //   console.log('jquery text code worked');
+    // });
 
     $.ajax({
       method: 'POST',
       url: '/answer/' + pollId +'/' + userId +'/' +urlId,
-      data: data                // {id:5, value: 'nut'}                    //$('.choices').serializeArray()
+      data: data
     })
     .done((response) => {
-      console.log('response' response.redirect);
-      if (response.redirect) {
-          window.location.href = response.redirect;
-          console.log('response insside if');
-      }
+      // console.log('response' response.redirect);
+      window.location.replace('/result/' + pollId +'/' + userId +'/' +urlId);
+      // if (response.redirect) {
+          // window.location.href = response.redirect;
+      //     console.log('response inside if');
+      // }
       console.log('response finished');
     })
-    .fail(console.error('test'));
+    .fail(() => { console.error('test'); });
   });
 
 

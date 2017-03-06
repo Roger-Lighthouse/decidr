@@ -68,6 +68,7 @@ module.exports = () => {
 
 
  router.post("/send_text", (req, res) => {
+  console.log('got to send_text path');
    const phone = req.body.phone;
    const message = req.body.message;
    const message1 = twilCli.sendSms(phone, message, function (err, body) {

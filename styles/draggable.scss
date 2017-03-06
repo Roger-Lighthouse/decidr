@@ -1,16 +1,24 @@
-@import 'base.scss'; 
+@import 'base.scss';
 
-#sortable { 
+
+
+#sortable {
   color: snow;
-  padding-left: 0px; 
-  list-style: none; 
+  padding-left: 0px;
+  list-style: none;
+
   .choices {
     background-color: $lightred;
-    border-radius: 5px;  
-    border: 1px solid $darkred; 
+    border-radius: 5px;
+    border: 1px solid $darkred;
     font-size: 120%;
   }
+
   .choices:hover {
     background-color: $darkred;
+  }
+
+  fieldset {
+    text-align: center;
   }
 }
