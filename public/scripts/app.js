@@ -75,8 +75,10 @@ $(() => {
       data: data
     })
     .done((response) => {
+      console.log('ajax response:', response);
       // console.log('response' response.redirect);
-      window.location.replace('/result/' + pollId +'/' + userId +'/' +urlId);
+      window.location.replace(response.redirect);
+      // window.location.replace('/result/' + pollId +'/' + userId +'/' +urlId);
       // if (response.redirect) {
           // window.location.href = response.redirect;
       //     console.log('response inside if');

@@ -231,10 +231,24 @@ module.exports = (knex) => {
       return knex.table('selection').insert(multiRowInsert);
     })
     .then( () => {
-      res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
+      return knex.table('poll').where('id',req.params.pollId).andWhere('creator_id', req.params.userId);
+    })
+    .then( (result) => {
+      console.log('check if the user is the creator result:', result);
+      if (result.length === 0) {
+        // res.redirect('/thanks');
+        return res.send({redirect:'/thanks'});
+      } else {
+        // res.redirect(`/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`);
+        return res.send({redirect: `/result/${req.params.pollId}/${req.params.userId}/${req.params.urlId}`});
+      }
     })
   })
 
+
+  router.get('/thanks', (req, res) => {
+    res.render('thanks_for_vote');
+  });
 
   // Results page
   router.get("/result/:pollId/:userId/:urlId", (req, res) => {
